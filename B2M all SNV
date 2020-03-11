@@ -1,0 +1,224 @@
+#！coding:utf-8
+#author:XieCuinanCAU
+#renumber to change GENE name n file name
+
+with open('/Users/Xiecuinan/Desktop/B2M-genbank-p.txt') as f:
+    ref = f.read()
+global seq
+seq = ref.replace('\n','')
+global seqList
+seqList = list(seq)
+global num
+num = len(seqList)
+global gene 
+gene = "B2M"#change gene name,like'"GENE"'
+global NM 
+NM =  "NM_004048.3" #depends on gene,must like'"NM_004304.5(ALK):c.*A>A(p.Met1Met)"'
+global locID
+locID = 31#change geneID,like'928'
+global codon_dict
+codon_dict = {
+'TTT':'Phe','TCT':'Ser','TAT':'Tyr','TGT':'Cys',
+'TTC':'Phe','TCC':'Ser','TAC':'Tyr','TGC':'Cys',
+'TTA':'Leu','TCA':'Ser','TAA':'STOP','TGA':'STOP',
+'TTG':'Leu','TCG':'Ser','TAG':'STOP','TGG':'Trp',
+'CTT':'Leu','CCT':'Pro','CAT':'His','CGT':'Arg',
+'CTC':'Leu','CCC':'Pro','CAC':'His','CGC':'Arg',
+'CTA':'Leu','CCA':'Pro','CAA':'His','CGA':'Arg',
+'CTG':'Leu','CCG':'Pro','CAG':'His','CGG':'Arg',
+'ATT':'Ile','ACT':'Thr','AAT':'Asn','AGT':'Ser',
+'ATC':'Ile','ACC':'Thr','AAC':'Asn','AGC':'Ser',
+'ATA':'Ile','ACA':'Thr','AAA':'Lys','AGA':'Arg',
+'ATG':'Met','ACG':'Thr','AAG':'Lys','AGG':'Arg',
+'GTT':'Val','GCT':'Ala','GAT':'Asp','GGT':'Gly',
+'GTC':'Val','GCC':'Ala','GAC':'Asp','GGC':'Gly',
+'GTA':'Val','GCA':'Ala','GAA':'Glu','GGA':'Gly',
+'GTG':'Val','GCG':'Ala','GAG':'Glu','GGG':'Gly',
+}
+#prepare done!
+def get_number(seq):
+	result = []
+	g = []
+	x = []
+	for i in range(44711547,44711613+1,1):
+		g1 = str(i)
+		g.append(g1)
+	for i in range(44715423,44715701+1,1):
+		g2 = str(i)
+		g.append(g2)
+	for i in range(44716329,44716342+1,1):
+		g3 = str(i)
+		g.append(g3)
+	
+	for i in range(0,len(g)):
+		x = int(g[i]) + 292198
+		for j in range(0,4):
+			gg37 = str(x)
+			result.append(gg37)
+	return result
+"""NM_004048.3(B2M):c.1A>G (p.Met1Val)
+GRCh37:
+Chr15:45003745
+GRCh38:
+Chr15:44711547"""
+	
+	
+def cli_number(seq):
+	result = []
+	g = []
+	for i in range(44711547,44711613+1,1):
+		g1 = str(i)
+		g.append(g1)
+	for i in range(44715423,44715701+1,1):
+		g2 = str(i)
+		g.append(g2)
+	for i in range(44716329,44716342+1,1):
+		g3 = str(i)
+		g.append(g3)
+	
+	for i in range(0,360):
+		cli= str(g[i])
+		for j in range(0,4):
+			result.append(cli)
+	return result
+#g38 = [join(44711547..44711613,44715423..44715701,44716329..44716342)]
+
+
+def loc_number(seq):
+    result = []
+    global c
+    c = []
+    for i in range(0,num):
+        for j in range(0,4):
+            x = locID + i ############
+            cn =1+i
+            c.append(str(cn))
+            idnm = str(x)
+            result.append(idnm)
+    return result
+
+def aanumber(seq):
+    result = []
+    for i in range(0,len(nnn)):
+        for j in range(0,12):###########
+        	a = i + 1
+        	st = str(a)
+        	result.append(st)
+    return result 
+
+def duplicate(seq):
+    result = []
+    for i in range (0,num):
+        for j in range(0,4):
+            result.append(seqList[i])
+    return result
+def seperate(seq):
+    result = []
+    global nnn
+    nnn = []
+    for i in range (0,num,3):
+        codon = seq[i:i+3]
+        nnn.append(codon)
+        #print(nnn)
+        for j in range(0,12):
+            result.append(seq[i:i+3])
+    return result
+
+def translate(seq):
+    result = []
+    for i in range(0,len(nnn)):
+        aa = codon_dict.get (nnn[i],'X')
+        for j in range(0,12):
+            result.append(aa)
+    return  result
+
+def mutation(seq):
+    result = []
+    global atcg
+    atcg = []
+    for i in range(0,len(nnn)):#range(0,len(codon),12),sanme with range(0,len(nnn))
+        three = nnn[i]
+        for j in range(0,len(three)):
+            tar = list(three)
+            tar[j] = 'A'
+            tar1 = ''.join(tar)#join(tar),not join(tar[i])
+            
+            tar = list(three)#must repeat this words
+            tar[j] = 'T'
+            tar2 = ''.join(tar)            
+            
+            tar = list(three)
+            tar[j] = 'C'
+            tar3 = ''.join(tar)            
+
+            tar = list(three)
+            tar[j] = 'G'
+            tar4 = ''.join(tar)
+
+            result.append(tar1)
+            result.append(tar2)
+            result.append(tar3)
+            result.append(tar4)                               
+    return result
+
+def trans_mut(seq):
+    result = []
+    for i in range(0,len(new_codon)):
+        aa = codon_dict.get (new_codon[i],'X')
+        result.append(aa)
+    return  result
+
+def last_column(seq):
+    
+    atcg = "ATCG"*num
+    global ATCG
+    ATCG = list(atcg)
+    result = []
+    for i in range(0,len(nt)):
+        one = NM# idmn need something find in refseq.txt,used in "NM_XXX"
+        two = gene
+        zuobiao = str(idnm[i])
+        three = nt[i]
+        four = str(ATCG[i])
+        five = AA[i]
+        six = str(AAnum[i])
+        seven = new_aa[i]
+        zuobiao2 = c[i]
+        shit = "{}({})".format(one,two) + ":c.{}".format(zuobiao2) + "{}>{}(p.{}{}{})".format(three,four,five,six,seven)
+        result.append(shit)
+    return result
+
+def main():
+#ready to use functions!
+    global idnm
+    idnm = loc_number(seq)
+    global nt
+    nt = duplicate(seq)
+    global cod
+    cod = seperate(seq)
+    global AA
+    AA = translate(seq)
+    global new_codon
+    new_codon = mutation(seq)
+    global AAnum
+    AAnum = aanumber(seq)
+    global new_aa
+    new_aa = trans_mut(seq)
+    shit = last_column(seq)
+    g38 = cli_number(seq)
+    g37 = get_number(seq)
+#   #print(len(idnm),len(nt),len(cod),len(AAnum),len(shit),len(g38),len(g37))
+    for i in range(0,len(nt)):
+    	gg38 = g38[i]
+    	gg37 = g37[i]
+    	#print(idnm[i],nt[i],cod[i],AA[i],ATCG[i],new_codon[i],new_aa[i],AAnum[i],shit[i],"GRCh38:{}".format(gg38),"GRCh37:Chr:15{}".format(gg37))       
+		
+        print idnm[i],nt[i],cod[i],AA[i],ATCG[i],new_codon[i],new_aa[i],AAnum[i],shit[i],"GRCh38:Chr:15{}".format(gg38),"GRCh37:Chr:15{}".format(gg37)
+        #print()
+             
+if __name__ == "__main__":
+    main()
+
+
+
+    
